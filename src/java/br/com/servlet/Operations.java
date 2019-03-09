@@ -42,7 +42,7 @@ public class Operations extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         //response.getWriter().write("true");
         
-        ReadTxtFile read = new ReadTxtFile("C:/Users/55329/Documents/NetBeansProjects/MatematicaDiscreta/teste.txt");
+        ReadTxtFile read = new ReadTxtFile("C:/Users/vitor/Documents/NetBeansProjects/matematica-discreta-algebra-de-conjuntos/teste2.txt");
         SaveTxtList save = new SaveTxtList();
         read.read(save);
         AlgebraOfSets algebra = new AlgebraOfSets();

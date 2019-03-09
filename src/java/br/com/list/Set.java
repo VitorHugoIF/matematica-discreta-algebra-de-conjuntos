@@ -24,6 +24,18 @@ public class Set {
         this.elements = new ArrayList();
         this.pairs = new ArrayList();
     }
+
+    public Set(List<Element> elements, List<Pair> pairs, String name) {
+        this.elements = elements;
+        this.pairs = pairs;
+        this.name = name;
+    }
+
+    public Set(List<Element> elements) {
+        this.elements = elements;
+        this.pairs = new ArrayList();
+    }
+    
     
     /**
     *Retorna a lista de elementos do conjunto.
@@ -65,6 +77,20 @@ public class Set {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public Element getLastElement(){
+        return this.elements.get((elements.size())-1);
+    }
+    
+    public Set clone(){
+        List<Element> elementList = new ArrayList<>();
+        for (int i = 0; i < this.elements.size(); i++) {
+            elementList.add(this.elements.get(i));
+        }
+        Set set = new Set(elementList);
+        set.setName(this.name);
+        return set;
     }
 
     @Override

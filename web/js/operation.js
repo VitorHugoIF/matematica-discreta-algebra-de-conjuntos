@@ -111,6 +111,7 @@ $(document).ready(function () {
             type: "POST",
             data: $(this).serialize(),
             success: function (data) {
+                //console.log(data);
                 var table = '';
                 var json = JSON.parse(data);
                 console.log(json);
@@ -153,7 +154,7 @@ $(document).ready(function () {
                     $("#tableOperations").fadeIn("slow");
                     
                 } else if (json[0].name === "CONJUNTO DAS PARTES") {
-                    
+                    console.log(json);
                     var arr2 = new Array();
                     var string = "";
 

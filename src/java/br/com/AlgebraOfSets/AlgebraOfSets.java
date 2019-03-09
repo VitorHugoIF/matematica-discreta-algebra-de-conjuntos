@@ -100,13 +100,21 @@ public class AlgebraOfSets {
      * @return 
     */
     public Set intersection(List<Set> sets){
-        Set setResult = intersectionBetweenTwoSets(sets.get(0), sets.get(1));//conjunto intersecao inicial
         
-        for (int i = 2; i < sets.size(); i++) {
-            Set set = sets.get(i);
-            setResult = intersectionBetweenTwoSets(setResult, set);
+        if (sets.size() > 2) {
+            Set setResult = intersectionBetweenTwoSets(sets.get(0), sets.get(1));//conjunto intersecao inicial
+            for (int i = 2; i < sets.size(); i++) {
+                Set set = sets.get(i);
+                setResult = intersectionBetweenTwoSets(setResult, set);
+            }
+            setResult.setName("INTERSECAO");
+            return setResult;
+        }else if (sets.size() == 2){
+            Set setResult = intersectionBetweenTwoSets(sets.get(0), sets.get(1));
+            setResult.setName("INTERSECAO");
+            return setResult;
         }
-        
+        Set setResult = new Set();
         setResult.setName("INTERSECAO");
         return setResult;
     }
@@ -152,63 +160,102 @@ public class AlgebraOfSets {
     }
     
     public List<Set> setOfParties(Set set){
-        List<Set> setList = new ArrayList<>();
-         //todos conjuntos unitarios dos elementos
-        for (int i = 0; i < set.getElements().size(); i++) {
+        List<Set> finalListSet = new ArrayList<>();
+                
+       /* for (int i = 0; i < ((set.getElements().size())-1); i++) {
+                
+            for (int j = i+1; j < set.getElements().size(); j++) {
+                
+                Set s = new Set();
+                s.setElements(set.getElements().get(i));
+                s.setElements(set.getElements().get(j));
+                finalListSet.add(s);
+            }
+        }*/
+        for (Element element : set.getElements()) {
+            Set s = new Set();
+            s.setElements(element);
+            finalListSet.add(s);
+        }
+        
+        finalListSet.addAll(subs(finalListSet, finalListSet));
+        return finalListSet;
+    }
+    public List<Set> subs (List<Set> list, List<Set> list1){
+        List<Set> finalListSet = new ArrayList<>();
+        
+        for (Set set : list) {
+            for (Set set1 : list1) {
+                
+                List<Element> el = set.getElements();
+                List<Element>el1 = set1.getElements();
+                
+                for (int i = 0; i < el.size(); i++) {
+                    
+                    for (int j = 0; j < el1.size(); j++) {
+                        
+                        if (Integer.parseInt(set.getLastElement().getValue()) < Integer.parseInt(el1.get(j).getValue())) {
+                            
+                            List<Element> aux = new ArrayList<>();
+                            aux.addAll(el);
+                            aux.addAll(el1);
+                            Set s = new Set(aux);
+                            finalListSet.add(s);
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+        /*List<Set> finalListSet = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Set setAux = list.get(i);
             
-            Set setAux = new Set();
-            setAux.setName("CONJUNTO DAS PARTES");
-            setAux.setElements(set.getElements().get(i));
-            setList.add(setAux);
-        }
-        
-        for (int i = 0; i < set.getElements().size()-; i++) {
-            //Set setRemove = set;
-            setList.addAll(subSets(set, i));
-        }
- 
-        return setList;
+            for (int j = 0; j < (set.getElements().size()); j++) {
+                
+                List<Element> le = setAux.getElements();
+                le.add(set.getElements().get(j));
+                Set s = new Set(le);
+                finalListSet.add(s);
+            }     
+        }*/
+       
+        return finalListSet;
     }
+    /*public List<List<Set>> setOfParties(Set set){
+        List<List<Set>> listRes = new ArrayList<>();
+        for (int i = set.getElements().size(); i >0 ; i--) {
+            listRes.add(subconjuntos(set, i));
+            
+        }
+        return listRes;
+    }
+    private static List<Set> subconjuntos(Set set, int quantidade) {  
+  
+        if (quantidade == 0) {
+            List<Set> list = new ArrayList<>();
+            return list;
+        }
+
+        List<Set> resultado = new ArrayList();
+        List<Element> abertos = new ArrayList(set.getElements());
+
+        while (!abertos.isEmpty()) {
+            Element elementAux = abertos.remove(0);
+            Set setRemoved = new Set(abertos);
+
+            List<Set> listE = subconjuntos(setRemoved, quantidade - 1);
+            for (Set set1 : listE) {
+               set1.setElements(elementAux);  
+                resultado.add(set1);   
+            }
+        }
+            return resultado  ;
+
+    } */ 
+      
+}  
+
     
-    private List<Set> subSets(Set set, int amount){
-        List<Set> setList = new ArrayList<>();
-        
-        for (int i = 0; i < amount; i++) {
-            Set setAux = new Set();
-            List<Element> listElement;
-            listElement = set.getElements().subList(i, amount-1);
-            for (int j = 0; j < 10; j++) {
-                setAux.setElements(listElement.get(j));
-            }
-            setAux.setName("CONJUNTO DAS PARTES");
-            setList.add(setAux);
-        }
-        return setList;
-    }
-    /*private List<Set> subSets(Set set, int amount){
-        List<Set> setList = new ArrayList<>();
-        //todos os conjuntos de duplas
-        for (int i = 0; i < amount-1; i++) {
-            for (int j = i+1; j < amount; j++) {
-               Set setAux = new Set();
-               setAux.setName("CONJUNTO DAS PARTES");
-               setAux.setElements(set.getElements().get(i));
-               setAux.setElements(set.getElements().get(j));
-               setList.add(setAux);
-               
-            }
-        }
-        
-        for (int i = amount; i > 0 ; i--) {
-            Set setAux = new Set();
-            setAux.setName("CONJUNTO DAS PARTES");
-            for (int j = 0; j < i; j++) {
-               setAux.setElements(set.getElements().get(j));
-            }
-            setList.add(setAux);
-        }
-        
-        return setList;
-             
-    }*/
-}
+    
