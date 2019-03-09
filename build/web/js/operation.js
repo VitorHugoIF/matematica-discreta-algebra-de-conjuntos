@@ -9,15 +9,16 @@ $(document).ready(function () {
     $("#divOperations").hide();
     $("#divSetsElements").hide();
     $("#tableOperations").hide();
-    
-    var globalSave = null;
 
-    $(document).on("change", "#selectArchive", function () {
-        var data = $("#selectArchive").val();
+    var globalSave = null;
+    var globalFileName;
+    $(document).on("change", "#selectArchive", function (e) {
+        var data = $(this)[0].files[0].name;
+        globalFileName = data;
         $.ajax({
             url: "readFile",
-            type: "POST",
-            data: data,
+            type: "GET",
+            data: "fileName=" + data,
             success: function (data) {
                 globalSave = data;
                 $("#divOperations").fadeIn("slow");
@@ -37,69 +38,98 @@ $(document).ready(function () {
         var content2 = "";
 
         if (operation === "pertinence") {
+            if (globalSave.listElements.length > 0 && globalSave.listSets.length > 0) {
 
-            for (var i = 0; i < globalSave.listElements.length; i++) {
-                //tansforma em array e depois em string, para tratar elemento nulo
-                var arr = new Array();
-                arr.push(globalSave.listElements[i].value);
-                var string = arr.join();
+                for (var i = 0; i < globalSave.listElements.length; i++) {
+                    //tansforma em array e depois em string, para tratar elemento nulo
+                    var arr = new Array();
+                    arr.push(globalSave.listElements[i].value);
+                    var string = arr.join();
 
-                content1 += "<option value=" + globalSave.listElements[i].name + ">" + globalSave.listElements[i].name + " = { " + string + " }</option>";
-            }
-
-            for (var i = 0; i < globalSave.listSets.length; i++) {
-                var arr = new Array();
-                var string = "";
-
-                for (var j = 0; j < globalSave.listSets[i].elements.length; j++) {
-                    arr.push(globalSave.listSets[i].elements[j].value);
+                    content1 += "<option value=" + globalSave.listElements[i].name + ">" + globalSave.listElements[i].name + " = { " + string + " }</option>";
                 }
-                string = arr.join();
-                content2 += "<option value=" + globalSave.listSets[i].name + ">" + globalSave.listSets[i].name + " = { " + string + " }</option>";
+
+                for (var i = 0; i < globalSave.listSets.length; i++) {
+                    var arr = new Array();
+                    var string = "";
+
+                    for (var j = 0; j < globalSave.listSets[i].elements.length; j++) {
+                        arr.push(globalSave.listSets[i].elements[j].value);
+                    }
+                    string = arr.join();
+                    content2 += "<option value=" + globalSave.listSets[i].name + ">" + globalSave.listSets[i].name + " = { " + string + " }</option>";
+                }
+
+                $("#objects1").html(content1);
+                $("#objects2").html(content2);
+                $("#divSetsElements").fadeIn("slow");
+                $("#objects2").show();
+                $("#btnSubmitOperations").fadeIn("fast");
+            } else {
+                alert("Impossivel realizar a operacao selecionada, por favor selecione outra! Operandos Incompletos.");
+                $("#btnSubmitOperations").fadeOut("fast");
             }
 
-            $("#objects1").html(content1);
-            $("#objects2").html(content2);
-            $("#divSetsElements").fadeIn("slow");
-            $("#objects2").show();
 
         } else if (operation === "contained" || operation === "containedProperly" || operation === "cartesianProduct") {
-            for (var i = 0; i < globalSave.listSets.length; i++) {
-                var arr = new Array();
-                var string = "";
+            if (globalSave.listSets.length > 0) {
+                for (var i = 0; i < globalSave.listSets.length; i++) {
+                    var arr = new Array();
+                    var string = "";
 
-                for (var j = 0; j < globalSave.listSets[i].elements.length; j++) {
-                    arr.push(globalSave.listSets[i].elements[j].value);
+                    for (var j = 0; j < globalSave.listSets[i].elements.length; j++) {
+                        arr.push(globalSave.listSets[i].elements[j].value);
+                    }
+                    string = arr.join();
+                    content1 += "<option value=" + globalSave.listSets[i].name + ">" + globalSave.listSets[i].name + " = { " + string + " }</option>";
                 }
-                string = arr.join();
-                content1 += "<option value=" + globalSave.listSets[i].name + ">" + globalSave.listSets[i].name + " = { " + string + " }</option>";
+                $("#objects1").html(content1);
+                $("#objects2").html(content1);
+                $("#divSetsElements").fadeIn("slow");
+                $("#objects2").show();
+                $("#btnSubmitOperations").fadeIn("fast");
+            } else {
+                alert("Impossivel realizar a operacao selecionada, por favor selecione outra! Operandos Incompletos.");
+                $("#btnSubmitOperations").fadeOut("fast");
             }
-            $("#objects1").html(content1);
-            $("#objects2").html(content1);
-            $("#divSetsElements").fadeIn("slow");
-            $("#objects2").show();
 
         } else if (operation === "union" || operation === "intersection") {
-            $("#objects1").html("<option>UNIÃO = todos os conjuntos</option>");
-            $("#objects2").html("<option>UNIÃO = todos os conjuntos</option>");
-            $("#divSetsElements").fadeIn("slow");
-            $("#objects2").show();
+
+            if (globalSave.listSets.length > 0) {
+                $("#objects1").html("<option>UNIÃO = todos os conjuntos</option>");
+                $("#objects2").html("<option>UNIÃO = todos os conjuntos</option>");
+                $("#divSetsElements").fadeIn("slow");
+                $("#objects2").show();
+                $("#btnSubmitOperations").fadeIn("fast");
+            } else {
+                alert("Impossivel realizar a operacao selecionada, por favor selecione outra! Operandos Incompletos.");
+                $("#btnSubmitOperations").fadeOut("fast");
+            }
+
 
         } else if (operation === "setOfParties") {
-            for (var i = 0; i < globalSave.listSets.length; i++) {
-                var arr = new Array();
-                var string = "";
+            console.log(globalSave);
+            if (globalSave.listSets.length > 0) {
+                for (var i = 0; i < globalSave.listSets.length; i++) {
+                    var arr = new Array();
+                    var string = "";
 
-                for (var j = 0; j < globalSave.listSets[i].elements.length; j++) {
-                    arr.push(globalSave.listSets[i].elements[j].value);
+                    for (var j = 0; j < globalSave.listSets[i].elements.length; j++) {
+                        arr.push(globalSave.listSets[i].elements[j].value);
+                    }
+                    string = arr.join();
+                    content1 += "<option value=" + globalSave.listSets[i].name + ">" + globalSave.listSets[i].name + " = { " + string + " }</option>";
                 }
-                string = arr.join();
-                content1 += "<option value=" + globalSave.listSets[i].name + ">" + globalSave.listSets[i].name + " = { " + string + " }</option>";
+                $("#objects1").html(content1);
+                $("#objects2").html("");
+                $("#divSetsElements").fadeIn("slow");
+                $("#objects2").hide();
+                $("#btnSubmitOperations").fadeIn("fast");
+            } else {
+                alert("Impossivel realizar a operacao selecionada, por favor selecione outra! Operandos Incompletos.");
+                $("#btnSubmitOperations").fadeOut("fast");
             }
-            $("#objects1").html(content1);
-            $("#objects2").html("");
-            $("#divSetsElements").fadeIn("slow");
-            $("#objects2").hide();
+
         }
 
     });
@@ -108,8 +138,8 @@ $(document).ready(function () {
         e.preventDefault();
         $.ajax({
             url: "operations",
-            type: "POST",
-            data: $(this).serialize(),
+            type: "GET",
+            data: $(this).serialize() + "&fileName=" + globalFileName,
             success: function (data) {
                 //console.log(data);
                 var table = '';
@@ -124,35 +154,51 @@ $(document).ready(function () {
                     var result = "<div class='alert alert-danger'> Falso </div>";
                     $("#tableOperations").hide();
                     $("#result").html(result);
-                     $("#result").fadeIn("slow");
+                    $("#result").fadeIn("slow");
                 } else if (json.name === "UNIAO" || json.name === "INTERSECAO") {
 
-                    var arr = new Array();
-                    var string = "";
+                    if (json.elements.length == 0) {
+                        table += '<tr><td>' + json.name + '</td><td> {vazio} </td></tr>';
+                        $("#result").hide();
+                        $("#bodyTableOperations").html(table);
+                        $("#tableOperations").fadeIn("slow");
+                    } else {
+                        var arr = new Array();
+                        var string = "";
 
-                    for (var i = 0; i < json.elements.length; i++) {
-                        arr.push(json.elements[i].value);
+                        for (var i = 0; i < json.elements.length; i++) {
+                            if (json.elements[i].value !== "vazio") {
+                                arr.push(json.elements[i].value);
+                            }
+
+                        }
+                        string = arr.join(", ");
+                        table += '<tr><td>' + json.name + '</td><td>' + string + '</td></tr>';
+                        $("#result").hide();
+                        $("#bodyTableOperations").html(table);
+                        $("#tableOperations").fadeIn("slow");
                     }
-                    string = arr.join(", ");
-                    table += '<tr><td>' + json.name + '</td><td>' + string + '</td></tr>';
-                    $("#result").hide();
-                    $("#bodyTableOperations").html(table);
-                    $("#tableOperations").fadeIn("slow");
-                    
-                } else if (json.name === "PRODUTO CARTESIANO"){
+
+                } else if (json.name === "PRODUTO CARTESIANO") {
                     var arr = new Array();
                     var string = "";
-                    
-                    for (var i = 0; i < json.pairs.length; i++) {
-                        arr.push("[ (conjunto: "+json.pairs[i].pair[0].set+", valor: "+json.pairs[i].pair[0].value+"), (conjunto: "+json.pairs[i].pair[1].set+", valor: "+json.pairs[i].pair[1].value+") ]");
-                       
+                    if (json.pairs[0].pair[0].value === "vazio") {
+                        table += '<tr><td>' + json.name + '</td><td> { vazio } </td></tr>';
+                        $("#result").hide();
+                        $("#bodyTableOperations").html(table);
+                        $("#tableOperations").fadeIn("slow");
+                    } else {
+                        for (var i = 0; i < json.pairs.length; i++) {
+                            arr.push("[ (conjunto: " + json.pairs[i].pair[0].set + ", valor: " + json.pairs[i].pair[0].value + "), (conjunto: " + json.pairs[i].pair[1].set + ", valor: " + json.pairs[i].pair[1].value + ") ]");
+                        }
+                        string = arr.join(", ");
+                        table += '<tr><td>' + json.name + '</td><td>' + string + '</td></tr>';
+                        $("#result").hide();
+                        $("#bodyTableOperations").html(table);
+                        $("#tableOperations").fadeIn("slow");
                     }
-                    string = arr.join(", ");
-                    table += '<tr><td>' + json.name + '</td><td>' + string + '</td></tr>';
-                    $("#result").hide();
-                    $("#bodyTableOperations").html(table);
-                    $("#tableOperations").fadeIn("slow");
-                    
+
+
                 } else if (json[0].name === "CONJUNTO DAS PARTES") {
                     console.log(json);
                     var arr2 = new Array();
@@ -166,13 +212,13 @@ $(document).ready(function () {
                         arr2.push(arr.join(", "));
                     }
                     console.log(arr2);
-                    string = arr2.join("}, {");
-                    string = "{"+string+"}";
+                    string = arr2.join(" }, { ");
+                    string = "{ " + string + " }";
                     table += '<tr><td>' + json[0].name + '</td><td>' + string + '</td></tr>';
                     $("#result").hide();
                     $("#bodyTableOperations").html(table);
                     $("#tableOperations").fadeIn("slow");
-                    
+
                 }
 
             },

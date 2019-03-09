@@ -37,7 +37,10 @@ public class ReadFile extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         
-        ReadTxtFile read = new ReadTxtFile("C:/Users/vitor/Documents/NetBeansProjects/matematica-discreta-algebra-de-conjuntos/teste2.txt");
+        String path = "C:/Users/vitor/Documents/NetBeansProjects/matematica-discreta-algebra-de-conjuntos/";
+        path+=request.getParameter("fileName");
+        ReadTxtFile read = new ReadTxtFile(path);
+        
         SaveTxtList save = new SaveTxtList();
         read.read(save);
         
