@@ -9,9 +9,12 @@ $(document).ready(function () {
     $("#divOperations").hide();
     $("#divSetsElements").hide();
     $("#tableOperations").hide();
+    $("#btnReverse").hide();
 
     var globalSave = null;
     var globalFileName;
+    var globalReverse;
+
     $(document).on("change", "#selectArchive", function (e) {
         var data = $(this)[0].files[0].name;
         globalFileName = data;
@@ -38,6 +41,7 @@ $(document).ready(function () {
         var content2 = "";
 
         if (operation === "pertinence") {
+            $("#btnReverse").hide();
             if (globalSave.listElements.length > 0 && globalSave.listSets.length > 0) {
 
                 for (var i = 0; i < globalSave.listElements.length; i++) {
@@ -72,6 +76,8 @@ $(document).ready(function () {
 
 
         } else if (operation === "contained" || operation === "containedProperly" || operation === "cartesianProduct") {
+            $("#btnReverse").hide();
+
             if (globalSave.listSets.length > 0) {
                 for (var i = 0; i < globalSave.listSets.length; i++) {
                     var arr = new Array();
@@ -94,7 +100,7 @@ $(document).ready(function () {
             }
 
         } else if (operation === "union" || operation === "intersection") {
-
+            $("#btnReverse").hide();
             if (globalSave.listSets.length > 0) {
                 $("#objects1").html("<option>UNIÃO = todos os conjuntos</option>");
                 $("#objects2").html("<option>UNIÃO = todos os conjuntos</option>");
@@ -108,6 +114,7 @@ $(document).ready(function () {
 
 
         } else if (operation === "setOfParties") {
+            $("#btnReverse").hide();
             console.log(globalSave);
             if (globalSave.listSets.length > 0) {
                 for (var i = 0; i < globalSave.listSets.length; i++) {
@@ -135,6 +142,7 @@ $(document).ready(function () {
     });
 
     $(document).on("submit", "#formOperations", function (e) {
+        
         e.preventDefault();
         $.ajax({
             url: "operations",
@@ -144,8 +152,10 @@ $(document).ready(function () {
                 //console.log(data);
                 var table = '';
                 var json = JSON.parse(data);
+                console.log("retorno");
                 console.log(json);
                 if (data === "true") {
+                    $("#btnReverse").hide();
                     var result = "<div class='alert alert-success'> Verdadeiro </div>";
                     $("#tableOperations").hide();
                     $("#result").html(result);
@@ -158,7 +168,8 @@ $(document).ready(function () {
                 } else if (json.name === "UNIAO" || json.name === "INTERSECAO") {
 
                     if (json.elements.length == 0) {
-                        table += '<tr><td>' + json.name + '</td><td> {vazio} </td></tr>';
+                        $("#btnReverse").hide();
+                        table += '<tr id="resultOperationsFunctions"><td>' + json.name + '</td><td> {vazio} </td></tr>';
                         $("#result").hide();
                         $("#bodyTableOperations").html(table);
                         $("#tableOperations").fadeIn("slow");
@@ -173,48 +184,54 @@ $(document).ready(function () {
 
                         }
                         string = arr.join(", ");
-                        table += '<tr><td>' + json.name + '</td><td>' + string + '</td></tr>';
+                        table += '<tr id="resultOperationsFunctions"><td>' + json.name + '</td><td>' + string + '</td></tr>';
                         $("#result").hide();
                         $("#bodyTableOperations").html(table);
                         $("#tableOperations").fadeIn("slow");
                     }
 
-                } else if (json.name === "PRODUTO CARTESIANO") {
+                } else if (json[0].name === "PRODUTO CARTESIANO") {
+
+                    globalReverse = json;
+
+                    $("#btnReverse").show();
                     var arr = new Array();
                     var string = "";
-                    if (json.pairs[0].pair[0].value === "vazio") {
-                        table += '<tr><td>' + json.name + '</td><td> { vazio } </td></tr>';
+                    if (json[0].pairs[0].pair[0].value === "vazio") {
+                        table += '<tr id="resultOperationsFunctions"><td>' + json[0].name + '</td><td> { vazio } </td></tr>';
                         $("#result").hide();
                         $("#bodyTableOperations").html(table);
                         $("#tableOperations").fadeIn("slow");
                     } else {
-                        for (var i = 0; i < json.pairs.length; i++) {
-                            arr.push("[ (conjunto: " + json.pairs[i].pair[0].set + ", valor: " + json.pairs[i].pair[0].value + "), (conjunto: " + json.pairs[i].pair[1].set + ", valor: " + json.pairs[i].pair[1].value + ") ]");
+                        for (var i = 0; i < json[0].pairs.length; i++) {
+                            arr.push("[ (conjunto: " + json[0].pairs[i].pair[0].set + ", valor: " + json[0].pairs[i].pair[0].value + "), (conjunto: " + json[0].pairs[i].pair[1].set + ", valor: " + json[0].pairs[i].pair[1].value + ") ]");
                         }
-                        string = arr.join(", ");
-                        table += '<tr><td>' + json.name + '</td><td>' + string + '</td></tr>';
+                        string = arr.join("; ");
+                        table += '<tr id="resultOperationsFunctions"><td>' + json[0].name + '</td><td>' + string + '</td></tr>';
                         $("#result").hide();
                         $("#bodyTableOperations").html(table);
                         $("#tableOperations").fadeIn("slow");
                     }
 
 
-                } else if (json[0].name === "CONJUNTO DAS PARTES") {
-                    console.log(json);
+                } else if (json[0][0].name === "CONJUNTO DAS PARTES") {
+                    globalReverse = json;
+                    $("#btnReverse").show();
+                    console.log(json[0]);
                     var arr2 = new Array();
                     var string = "";
 
-                    for (var i = 0; i < json.length; i++) {
+                    for (var i = 0; i < json[0].length; i++) {
                         var arr = new Array();
-                        for (var j = 0; j < json[i].elements.length; j++) {
-                            arr.push(json[i].elements[j].value);
+                        for (var j = 0; j < json[0][i].elements.length; j++) {
+                            arr.push(json[0][i].elements[j].value);
                         }
                         arr2.push(arr.join(", "));
                     }
                     console.log(arr2);
                     string = arr2.join(" }, { ");
                     string = "{ " + string + " }";
-                    table += '<tr><td>' + json[0].name + '</td><td>' + string + '</td></tr>';
+                    table += '<tr id="resultOperationsFunctions"><td>' + json[0][0].name + '</td><td>' + string + '</td></tr>';
                     $("#result").hide();
                     $("#bodyTableOperations").html(table);
                     $("#tableOperations").fadeIn("slow");
@@ -226,6 +243,48 @@ $(document).ready(function () {
                 console.log(data);
             }
         });
+    });
+
+    $(document).on("click", "#btnReverse", function (e) {
+        e.preventDefault();
+        console.log(globalReverse);
+        if ($("#cartesianProduct").prop("checked") == true) {
+            if (globalReverse[0].pairs[0].pair[0].value === "vazio") {
+                string1 = '<tr> <td> Origem </td> <td> Operacao nao pode ser realizada! </td> </tr>';
+            } else {
+                var arr1 = new Array();
+                var arr2 = new Array();
+
+                for (var i = 0; i < globalReverse[1][0].elements.length; i++) {
+                    arr1.push(globalReverse[1][0].elements[i].value);
+                }
+                for (var i = 0; i < globalReverse[1][1].elements.length; i++) {
+                    arr2.push(globalReverse[1][1].elements[i].value);
+                }
+
+                var string1 = arr1.join();
+                var string2 = arr2.join();
+
+                string1 = '<tr> <td> Origem </td> <td> ' + globalReverse[1][0].name + ' = { ' + string1 + ' } ' + globalReverse[1][1].name + ' = { ' + string2 + ' } </td> </tr>';
+
+            }
+        }else if ($("#setOfParties").prop("checked") == true) {
+            var arr1 = new Array();
+
+            for (var i = 0; i < globalReverse[1].elements.length; i++) {
+                arr1.push(globalReverse[1].elements[i].value);
+            }
+            
+            var string1 = arr1.join();
+
+            string1 = '<tr> <td> Origem </td> <td> ' + globalReverse[1].elements[0].set + ' = { ' + string1 + ' } </td> </tr>';
+
+        }
+     
+        
+        $("#bodyTableOperations").html($("#bodyTableOperations").html() + string1);
+        $("#btnReverse").hide();
+
     });
 
 });

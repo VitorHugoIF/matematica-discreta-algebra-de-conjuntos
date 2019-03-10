@@ -4,15 +4,42 @@
  * and open the template in the editor.
  */
 
-   $(document).ready(function (){
-       $.ajax({
-           url:"operation.jsp",
-           success: function (data){
-               $("#content").html(data);
-           },
-           error: function (data){
-               console.log(data);
-           }
-           
-       });
-   });
+$(document).ready(function () {
+    $.ajax({
+        url: "operation.jsp",
+        success: function (data) {
+            $("#content").html(data);
+        },
+        error: function (data) {
+            console.log(data);
+        }
+
+    });
+
+    $(document).on("click", "#menuOperations", function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "operation.jsp",
+            success: function (data) {
+                $("#content").html(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+    
+    $(document).on("click", "#menuExercises", function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "exercises.jsp",
+            success: function (data) {
+                $("#content").html(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
+});

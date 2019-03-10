@@ -5,6 +5,16 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div>
+    <div style="margin-top: 15px;">
+        <form id="formSelectArchive">
+            <div class="form-row">
+                <div class="form-group custom-file col-md-5">
+                    <input type="file" class="form-control-file" id="selectArchive">
+                </div>
+            </div> 
+        </form>
+    </div>
+    <hr>
     <h3 class="h3Blue">Operações em conjuntos</h3>
     <hr>
 
@@ -75,6 +85,7 @@
 
         </div>
         <div id="tableOperations" style="margin-top: 15px;">
+            <button type="button" class="btn btn-primary" id="btnReverse" style="margin-bottom:10px; ">Reverter</button>
             <table class="table table-bordered table-bordered table-sm">
                 <thead class="thead-light">
                     <tr>

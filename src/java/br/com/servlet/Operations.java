@@ -49,14 +49,16 @@ public class Operations extends HttpServlet {
         SaveTxtList save = new SaveTxtList();
         read.read(save);
         AlgebraOfSets algebra = new AlgebraOfSets();
-        
+        System.out.println(save.getListSets());
         String operation = request.getParameter("radioOperation");
+        
         String param1;
         String param2;
         
         Element element;
         Set set1;
         Set set2;
+        Set set3;
         Gson gson = new Gson();
         
         switch (operation) {
@@ -117,7 +119,25 @@ public class Operations extends HttpServlet {
                 param1 = request.getParameter("objects1");
                 set1 = findSet(save.getListSets(), param1);
                 response.getWriter().write(gson.toJson(algebra.setOfParties(set1)));
+                break; 
+            case "solveExerciseOne":
+                set1 = findSet(save.getListSets(), "A");
+                set2 = findSet(save.getListSets(), "B");
+
+                response.getWriter().write(gson.toJson(algebra.solveExercisesOne(set1, set2)));
                 break;
+            
+            case "solveExerciseTwo":
+                response.getWriter().write(gson.toJson(algebra.solveExercisesTwo(save.getListSets())));
+                break;
+            
+            case "solveExerciseThree":
+                set1 = findSet(save.getListSets(), "A");
+                set2 = findSet(save.getListSets(), "B");
+                set3 = findSet(save.getListSets(), "C");
+                response.getWriter().write(gson.toJson(algebra.solveExercisesThree(save.getListElements().get(0), set1, set2, set3)));
+                break;
+            
             default:
                 break;
         }
