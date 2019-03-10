@@ -43,7 +43,7 @@ public class AlgebraOfSets {
 
     /**
      * Verifica se um dado conjunto esta contido ou é igual a outro. utiliza de
-     * metodos elementares - pertenceNaoPertence retorno Boleano.
+     * metodos elementares - pertinence - retorno Boleano.
      *
      * @param set1
      * @param set2
@@ -65,7 +65,7 @@ public class AlgebraOfSets {
 
     /**
      * Verifica se um dado conjunto esta contido propiamente ou nao em outro.
-     * utiliza de metodos elementares - contidoNaoContido retorno Boleano.
+     * utiliza de metodos elementares - contained - retorno Boleano.
      *
      * @param set1
      * @param set2
@@ -79,8 +79,7 @@ public class AlgebraOfSets {
 
     /**
      * Retorna o conjunto uniao dos conjuntos presentes na lista passada como
-     * paramentro.. utiliza de metodos elementares - pertenceNaoPertence retorno
-     * Boleano.
+     * paramentro. Utiliza de metodos elementares - pertinence - retorno Boleano.
      *
      * @param sets
      * @return
@@ -103,7 +102,7 @@ public class AlgebraOfSets {
 
     /**
      * Retorna o conjunto intersecao dos conjuntos presentes na lista passada
-     * como paramentro.. retorno Boleano.
+     * como paramentro. retorno Boleano.
      *
      * @param sets
      * @return
@@ -130,7 +129,7 @@ public class AlgebraOfSets {
 
     /**
      * Retorna o conjunto intersecao de dois conjuntos. utiliza de metodos
-     * elementares - pertenceNaoPertence retorno Boleano.
+     * elementares - pertinence - retorno Boleano.
      *
      * @param sets
      * @return
@@ -147,39 +146,15 @@ public class AlgebraOfSets {
 
         return setResult;
     }
-    
-    
-    /*public Set cartesianProduct(Set set1, Set set2) {
-        Set setResult = new Set();
-
-        if (set1.getElements().get(0).getValue().equals("vazio") || set2.getElements().get(0).getValue().equals("vazio")) {
-            Pair pair = new Pair();
-            Element element1 = new Element("PRODUTO CARTESIANO", "vazio", "vazio");
-            Element element2 = new Element("PRODUTO CARTESIANO", "vazio", "vazio");
-            pair.setFirstElementPair(element1);
-            pair.setSecondElementPair(element2);
-            setResult.setName("PRODUTO CARTESIANO");
-            setResult.setPairs(pair);
-            return setResult;
-        }
-
-        List<Element> elementList1 = set1.getElements();
-        for (int i = 0; i < elementList1.size(); i++) {
-            List<Element> elementList2 = set2.getElements();
-            for (int j = 0; j < elementList2.size(); j++) {
-                Pair pair = new Pair();
-                Element element1 = elementList1.get(i);
-                Element element2 = elementList2.get(j);
-                pair.setFirstElementPair(element1);
-                pair.setSecondElementPair(element2);
-                setResult.setPairs(pair);
-            }
-        }
-
-        setResult.setName("PRODUTO CARTESIANO");
-        return setResult;
-    }*/
-    
+   
+    /**
+     * Retorna uma lista de objetos 
+     * posicao 0 = Conjunto representando o Produto cartesiano entre dois conjuntos
+     * posicao 1 = Conjunto representando a operacao inversa ao produto cartesiano
+     * @param set1
+     * @param set2
+     * @return 
+     */
     public List<Object> cartesianProduct(Set set1, Set set2) {
         Set setResult = new Set();
         List<Object> s = new ArrayList<>();
@@ -215,35 +190,14 @@ public class AlgebraOfSets {
          s.add(lsAux);
         return s;
     }
-
-    /*public List<Set> setOfParties(Set set) {
-        List<Set> finalListSet = new ArrayList<>();
-        List<Set> ListSet = new ArrayList<>();
-        if (set.getElements().get(0).getValue().equals("vazio")) {
-            set.setName("CONJUNTO DAS PARTES");
-            finalListSet.add(set);
-            return finalListSet;
-        }
-
-        for (Element element : set.getElements()) {
-            Set s = new Set();
-            s.setName("CONJUNTO DAS PARTES");
-            s.setElements(element);
-            ListSet.add(s);
-        }
-        finalListSet.addAll(ListSet);
-
-        List<Set> aux = ListSet;
-        int i = (int) (Math.pow(2, ListSet.size()) - ListSet.size());//total de item no subconjunto final (2^n) - a quantidade da lista unitaria
-        while (i >= 0) {
-            aux = subs(aux, ListSet, i);
-            finalListSet.addAll(aux);
-            i--;
-        }
-
-        return finalListSet;
-    }*/
     
+    /**
+     * Retorna uma lista de objetos 
+     * posicao 0 = Conjunto representando o conjunto das partes de um conjunto
+     * posicao 1 = Conjunto representando a operacao inversa ao conjunto das partes
+     * @param set
+     * @return 
+     */
     public List<Object> setOfParties(Set set) {
         List<Set> finalListSet = new ArrayList<>();
         List<Set> ListSet = new ArrayList<>();
@@ -259,7 +213,7 @@ public class AlgebraOfSets {
                     
             return returList;
         }
-
+        //conjunto inicial com uma lista de cunjuntos unitarios de cada elemento
         for (Element element : set.getElements()) {
             Set s = new Set();
             s.setName("CONJUNTO DAS PARTES");
@@ -282,8 +236,19 @@ public class AlgebraOfSets {
         return returList;
     }
     
+    //retorna uma lista de conjuntos resultado dos subconjuntos das listas em parametro
+    /**
+     * uma lista de conjuntos resultado dos subconjuntos das listas em parametro
+     * a segunda lista no parametro deve ser uma lista de conjuntos unitarios
+     *
+     * @param list
+     * @param list1
+     * @param q
+     * @return 
+     */
     private List<Set> subs(List<Set> list, List<Set> list1, int q) {
-
+        
+        //se a cardinalidade e 0, retorna o conjunto vazio
         if (q == 0) {
             List<Set> l = new ArrayList<>();
             Set s = new Set();
@@ -291,18 +256,19 @@ public class AlgebraOfSets {
             return l;
         }
         List<Set> finalListSet = new ArrayList<>();
-
+        
+        
         for (Set set : list) {
             for (Set set1 : list1) {
                 List<Element> el = set.getElements();
                 List<Element> el1 = set1.getElements();
 
                 for (int j = 0; j < el1.size(); j++) {
-
+                    //Verifica se o ultimo elemento do par e menor que o elemento cadidato a entrar no conjunto
                     if (Integer.parseInt(set.getLastElement().getValue()) < Integer.parseInt(el1.get(j).getValue())) {
                         List<Element> aux = new ArrayList<>();
-                        aux.addAll(el);
-                        aux.addAll(el1);
+                        aux.addAll(el);//adiciona a lista de elementos do primeiro conjunto
+                        aux.addAll(el1);//adiciona a lista de elementos do segundo conjunto
                         Set s = new Set(aux);
                         s.setName("CONJUNTO DAS PARTES");
                         finalListSet.add(s);
@@ -314,18 +280,30 @@ public class AlgebraOfSets {
         return finalListSet;
     }
     
-    public List<Set> reverseCartesianProduct(Set set1){
+    //retorna uma lista que representa o operacao inversa ao produto cartesiano
+    /**
+     * Retorna uma lista de conjuntos resultado dos subconjuntos das listas em parametro
+     * elementares - pertenceNaoPertence retorno Boleano.
+     *
+     * @param list
+     * @param list1
+     * @param q
+     * @return 
+     */
+    private List<Set> reverseCartesianProduct(Set set1){
         Set setA = new Set();
         Set setB = new Set();
         List<Set> list = new ArrayList<>();
         
         String nameA = set1.getPairs().get(0).getFirstElementPair().getSet();
         String nameB = set1.getPairs().get(0).getSecondElementPair().getSet();
-        System.out.println("A = "+ nameA+"  B = "+nameB);
         
+        //para cada elemento do par verifica se ja ele pertence ao conjunto resultado,
+        // caso nao, adiciona-o
         for (int i = 0; i < set1.getPairs().size(); i++) {
             
-            if(set1.getPairs().get(i).getFirstElementPair().getSet().equals(nameA)){// || set1.getPairs().get(i).getSecondElementPair().getSet().equals(nameA)){
+            //pertence ao primeiro conjunto origem
+            if(set1.getPairs().get(i).getFirstElementPair().getSet().equals(nameA)){
                 
                 if (!this.pertinence(setA, set1.getPairs().get(i).getFirstElementPair())) {
                     setA.setElements(set1.getPairs().get(i).getFirstElementPair());
@@ -333,7 +311,8 @@ public class AlgebraOfSets {
                 setA.setName(nameA);
                 
             }
-            if(set1.getPairs().get(i).getSecondElementPair().getSet().equals(nameB)){// || set1.getPairs().get(i).getFirstElementPair().getSet().equals(nameB)){
+            //pertence ao segundo conjunto origem
+            if(set1.getPairs().get(i).getSecondElementPair().getSet().equals(nameB)){
                 
                 if (!this.pertinence(setB, set1.getPairs().get(i).getSecondElementPair())) {
                     setB.setElements(set1.getPairs().get(i).getSecondElementPair());
@@ -347,7 +326,16 @@ public class AlgebraOfSets {
         
         return list;
     }
-    public Set reverseSetOfParties(List<Set> sets){
+    //retorna uma lista que representa o operacao inversa ao conjunto das partes
+    /**
+     * Retorna uma lista que representa o operacao inversa ao conjunto das partes
+     *
+     * @param sets
+     * @return 
+     */
+    private Set reverseSetOfParties(List<Set> sets){
+        //caso o conjunto da lista de subconjuntos seja unitario
+        //adiciona o elemento ao conjunto origem
         Set set = new Set();
         for (int i = 0; i < sets.size(); i++) {
             if (sets.get(i).getElements().size() == 1) {
@@ -358,21 +346,36 @@ public class AlgebraOfSets {
         return set;
     }
     
-    public List<Object> solveExercisesOne(Set set1, Set set2){
+    /*Os times 4, 8, 12 e 16 do estado de Pernambuco devem jogar com os times 3, 7, 11 e 15 do estado do Para.
+    Cada time de Pernambuco deve jogar uma vez com cada time do Para. Exiba os jogos que devem ser realizados.*/
+    public List<Object> solveExercisesOne(List<Set> list){
+        Set set1 = list.get(0);
+        Set set2 = list.get(1);
         return this.cartesianProduct(set1, set2);
     }
     
+    /*Suponha que voce tem o codigo (numerico) dos alunos que obtiveram media na disciplina A, o codigo dos alunos
+    com media na disciplina B e o codigo dos alunos com media na disciplina C. O criterio de aprovacao na escola exige
+    media em todas as disciplinas para aprovcao. Exiba a lista dos alunos aprovados. Exiba a lista dos alunos com
+    media em pelo menos uma disciplina.*/
     public List<Object> solveExercisesTwo(List<Set> list){
-        List<Object> result = new ArrayList<>();
-        List<Element> average = new ArrayList<>();
-        
+        List<Object> result = new ArrayList<>();        
         result.add(this.intersection(list));
         result.add(this.union(list));
        
         return result;
     }
     
-    public List<Object> solveExercisesThree(Element element, Set sem1, Set sem2, Set mes){
+    /*Uma empresa tem a seguinte poltica de premiacao de fim de ano: ganha premio o funcionario que tiver batido sua
+    meta no primeiro ou no segundo semestre ou em ambos e que tenha sido o melhor vendedor em pelo menos um mes.
+    De posse do codigo do funcionario, da relacao de funcionarios cumpridores da meta em cada semestre e da relacao
+    de melhores vendedores do mes, informe se este funcionario recebera ou nao premio de fim de ano.*/
+    public List<Object> solveExercisesThree(List<Element> elements, List<Set> sets){
+        Element element = elements.get(0);
+        Set sem1 = sets.get(0);
+        Set sem2 = sets.get(1);
+        Set mes = sets.get(2);
+        
         List<Object> result = new ArrayList<>();
         
         List<Set> list = new ArrayList<>();

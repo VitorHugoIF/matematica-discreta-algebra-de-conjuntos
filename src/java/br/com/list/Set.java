@@ -79,6 +79,10 @@ public class Set {
         this.name = name;
     }
     
+    /**
+     * Retorna o ultimo elemento do conjunto
+     * @return 
+    */
     public Element getLastElement(){
         return this.elements.get((elements.size())-1);
     }

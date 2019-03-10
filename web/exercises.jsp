@@ -10,6 +10,12 @@
                 Os times 4, 8, 12 e 16 do estado de Pernambuco devem jogar com os times 3, 7, 11 e 15 do estado do Para. Cada
                 time de Pernambuco deve jogar uma vez com cada time do Para. Exiba os jogos que devem ser realizados.
             </p>
+            <div class="form-group col-md-6">
+                <input type="text" name="objects1Exercise1" id="object1Exercise1" class="form-control" readonly></input>
+            </div>
+            <div class="form-group col-md-6">
+                <input type="text" name="objects2Exercise1" id="object2Exercise1" class="form-control" readonly></input>
+            </div>
         </div>
         <div class="row">
             <h4>Exercicio 2:</h4>
@@ -19,6 +25,15 @@
                 media em todas as disciplinas para aprovcao. Exiba a lista dos alunos aprovados. Exiba a lista dos alunos com
                 media em pelo menos uma disciplina.
             </p>
+            <div class="form-group col-md-4">
+                <input type="text" name="objects1Exercise2" id="object1Exercise2" class="form-control" readonly></input>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="text" name="objects2Exercise2" id="object2Exercise2" class="form-control" readonly></input>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="text" name="objects3Exercise2" id="object3Exercise2" class="form-control" readonly></input>
+            </div>
         </div>
         <div class="row">
             <h4>Exercicio 3:</h4>
@@ -28,6 +43,18 @@
                 De posse do codigo do funcionario, da relacao de funcionarios cumpridores da meta em cada semestre e da relacao
                 de melhores vendedores do mes, informe se este funcionario recebera ou nao premio de fim de ano.
             </p>
+            <div class="form-group col-md-2">
+                <input type="text" name="objects1Exercise3" id="object1Exercise3" class="form-control" readonly></input>
+            </div>
+            <div class="form-group col-md-3">
+                <input type="text" name="objects2Exercise3" id="object2Exercise3" class="form-control" readonly></input>
+            </div>
+            <div class="form-group col-md-3">
+                <input type="text" name="objects3Exercise3" id="object3Exercise3" class="form-control" readonly></input>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="text" name="objects4Exercise3" id="object4Exercise3" class="form-control" readonly></input>
+            </div>
         </div>
         <div class="row">
             <select name="Selectexercises" id="Selectexercises" class="form-control">

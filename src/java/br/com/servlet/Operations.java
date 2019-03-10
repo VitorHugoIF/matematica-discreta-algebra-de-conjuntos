@@ -40,26 +40,27 @@ public class Operations extends HttpServlet {
         
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        //response.getWriter().write("true");
         
+        //Adiciona o path absoluto ao arquivo
         String path = "C:/Users/vitor/Documents/NetBeansProjects/matematica-discreta-algebra-de-conjuntos/";
         path+=request.getParameter("fileName");
+        
         ReadTxtFile read = new ReadTxtFile(path);
         
+        //le o arquivo e pega a o peracao a ser realizada
         SaveTxtList save = new SaveTxtList();
         read.read(save);
         AlgebraOfSets algebra = new AlgebraOfSets();
-        System.out.println(save.getListSets());
         String operation = request.getParameter("radioOperation");
         
-        String param1;
-        String param2;
-        
-        Element element;
-        Set set1;
-        Set set2;
-        Set set3;
-        Gson gson = new Gson();
+        //Variaveis ultilizadas no processo
+        String param1;//Nome do conjunto recebido da combobox 1
+        String param2;//Nome do conjunto recebido da combobox 2
+        Element element;//Elemento que representa o elemento buscado na funcao findElement
+        Set set1;//Conjunto que representa o conjunto buscado na funcao findSet
+        Set set2;//Conjunto que representa o conjunto buscado na funcao findSet
+        Set set3;//Conjunto que representa o conjunto buscado na funcao findSet
+        Gson gson = new Gson();//classe de manipulacao JSON
         
         switch (operation) {
             
@@ -121,10 +122,7 @@ public class Operations extends HttpServlet {
                 response.getWriter().write(gson.toJson(algebra.setOfParties(set1)));
                 break; 
             case "solveExerciseOne":
-                set1 = findSet(save.getListSets(), "A");
-                set2 = findSet(save.getListSets(), "B");
-
-                response.getWriter().write(gson.toJson(algebra.solveExercisesOne(set1, set2)));
+                response.getWriter().write(gson.toJson(algebra.solveExercisesOne(save.getListSets())));
                 break;
             
             case "solveExerciseTwo":
@@ -132,10 +130,7 @@ public class Operations extends HttpServlet {
                 break;
             
             case "solveExerciseThree":
-                set1 = findSet(save.getListSets(), "A");
-                set2 = findSet(save.getListSets(), "B");
-                set3 = findSet(save.getListSets(), "C");
-                response.getWriter().write(gson.toJson(algebra.solveExercisesThree(save.getListElements().get(0), set1, set2, set3)));
+                response.getWriter().write(gson.toJson(algebra.solveExercisesThree(save.getListElements(), save.getListSets())));
                 break;
             
             default:
