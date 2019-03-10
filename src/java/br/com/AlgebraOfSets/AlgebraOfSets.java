@@ -51,7 +51,7 @@ public class AlgebraOfSets {
      */
     public boolean contained(Set set1, Set set2) {
         if (set1.getElements().get(0).getValue().equals("vazio")) {
-            return false;
+            return true;
         }
         List<Element> elementList = set1.getElements();
         for (int i = 0; i < elementList.size(); i++) {
