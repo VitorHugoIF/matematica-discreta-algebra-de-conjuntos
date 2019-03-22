@@ -35,6 +35,9 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="" id="menuExercises">Exercicios</a>
                         </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="" id="menuRelations">Relações</a>
+                        </li>
                     </ul>
                 </div>
                 

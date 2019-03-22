@@ -8,6 +8,10 @@
         <servlet-name>Operations</servlet-name>
         <servlet-class>br.com.servlet.Operations</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Relations</servlet-name>
+        <servlet-class>br.com.servlet.Relations</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ReadFile</servlet-name>
         <url-pattern>/ReadFile</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>Operations</servlet-name>
         <url-pattern>/Operations</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Relations</servlet-name>
+        <url-pattern>/Relations</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

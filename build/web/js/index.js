@@ -41,5 +41,17 @@ $(document).ready(function () {
             }
         });
     });
+    $(document).on("click", "#menuRelations", function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "relation.jsp",
+            success: function (data) {
+                $("#content").html(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
 
 });

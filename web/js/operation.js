@@ -48,7 +48,7 @@ $(document).ready(function () {
                     arr.push(globalSave.listElements[i].value);
                     var string = arr.join();
 
-                    content1 += "<option value=" + globalSave.listElements[i].name + ">" + globalSave.listElements[i].name + " = { " + string + " }</option>";
+                    content1 += "<option value=" + globalSave.listElements[i].name + ">" + globalSave.listElements[i].name + " =  " + string + " </option>";
                 }
 
                 for (var i = 0; i < globalSave.listSets.length; i++) {

@@ -28,9 +28,7 @@ public class AlgebraOfSets {
      * @return
      */
     public boolean pertinence(Set set, Element element) {
-        if (element.getValue().equals("vazio")) {
-            return true;
-        }
+        
         List<Element> elementList = set.getElements();
         for (int i = 0; i < elementList.size(); i++) {
             Element elementAux = elementList.get(i);
