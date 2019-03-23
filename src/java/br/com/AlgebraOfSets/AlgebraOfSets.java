@@ -395,25 +395,45 @@ public class AlgebraOfSets {
         return result;
     }
     
-    public List<Object> Relationships(List<Set> list, String relation){
+    public List<Object> Relationships(List<Set> list, String relation, String StringPairs){
         List<Object> result = new ArrayList<>();
-        Set pairs = new Set();
-        Set domain = new Set();
-        Set image = new Set();
+        Set pairs = new Set();pairs.setName("PARES");
+        Set domain = new Set();domain.setName("DOMINIO");
+        Set image = new Set();image.setName("IMAGEM");
         Set set1 = list.get(0);
         Set set2 = list.get(1);
-        
-        for (int i = 0; i < set1.getElements().size(); i++) {
-            for (int j = 0; j < set2.getElements().size(); j++) {
-                this.setRelationship(pairs, domain, image, set1.getElements().get(i), set2.getElements().get(j), 
-                        relation.equals("=") ? "=" : relation.equals(">") ? ">" : relation.equals("<") ? "<" :
-                               relation.equals("^2") ? "^2" : "sqrt");
+        int matrix[][];
+
+        if (relation.equals("arbitraryRelationship")) {
+           
+            result = this.generateArbitraryRelationPairs(StringPairs);            
+            matrix = this.generateMatrix(set1, set2, (Set) result.get(0));
+            result.add(this.getRelationshipClassification(matrix));
+            result.add(matrix);
+            if (!checkPairPertinence((Set) result.get(0), set1, set2)) {
+                result.add("PARES INCORRETOS");
             }
+           
+           return result;
+        } else {
+            
+            for (int i = 0; i < set1.getElements().size(); i++) {
+                for (int j = 0; j < set2.getElements().size(); j++) {
+                    this.setRelationship(pairs, domain, image, set1.getElements().get(i), set2.getElements().get(j),
+                            relation.equals("=") ? "=" : relation.equals(">") ? ">" : relation.equals("<") ? "<"
+                            : relation.equals("^2") ? "^2" : "sqrt");
+                }
+            }
+
+            matrix = this.generateMatrix(set1, set2, pairs);
+
+            result.add(pairs);
+            result.add(domain);
+            result.add(image);
+            result.add(this.getRelationshipClassification(matrix));
+            result.add(matrix);
+            return result;
         }
-        result.add(pairs);
-        result.add(domain);
-        result.add(image);
-        return result;
     }
     
     private void setRelationship(Set pairs, Set domain, Set image, Element a, Element b, String relation){
@@ -476,30 +496,173 @@ public class AlgebraOfSets {
         }
     }
     
-    public Set generateArbitraryRelationPairs(String pairs) {
-        Set listPairs = new Set();
-
+    public List<Object> generateArbitraryRelationPairs(String pairs) {
+        Set listPairs = new Set();listPairs.setName("PARES");
+        Set domain = new Set();domain.setName("DOMINIO");
+        Set image = new Set();image.setName("IMAGEM");
+        List<Object> list = new ArrayList<>();
+        
         if (pairs.equals("")) {
-            return listPairs;
+            list.add(listPairs);
+            list.add(domain);
+            list.add(image);
+            return list;
         } else {
+            
             String ArrayOfPairs[] = pairs.split(";");
-
+            
             for (String ArrayOfPair : ArrayOfPairs) {
                 String[] ArrayOfElements = ArrayOfPair.split(",");
+                
+
                 Pair pair = new Pair();
                 Element e1 = new Element("Arbitrary", "domain", ArrayOfElements[0]);
                 Element e2 = new Element("Arbitrary", "image", ArrayOfElements[1]);
                 pair.setFirstElementPair(e1);
                 pair.setSecondElementPair(e2);
+                this.setDomain(domain, e1);
+                this.setImage(image, e2);
                 listPairs.setPairs(pair);
             }
-            return listPairs;
+            list.add(listPairs);
+            list.add(domain);
+            list.add(image);
+            return list;
         }
 
     }
     
-    public boolean getRelationshipClassification(Set pairsOfRealtionship){
-        return true;
+    public int [][] generateMatrix(Set set1, Set set2, Set pairs){
+        
+        int matrix [][] = new int[set1.getElements().size()][set2.getElements().size()];
+        
+        for (int i = 0; i < set1.getElements().size(); i++) {
+            for (int j = 0; j < set2.getElements().size(); j++) {
+                
+                if (pairs.checkPairPertinence(set1.getElements().get(i), set2.getElements().get(j))) {
+                    matrix[i][j] = 1;
+                }else{
+                    matrix[i][j] = 0;
+                }
+                
+            }
+        }
+        return matrix;
     }
     
+    public List getRelationshipClassification(int[][] matrix){
+        
+        int row[] = new int[matrix.length];
+        int column[] = new int[matrix[matrix.length - 1].length];
+        
+        for (int i = 0; i < matrix.length; i++) {
+            row[i]=0;
+        }
+        for (int j = 0; j < matrix[matrix.length - 1].length; j++) {
+            column[j]=0;
+        }
+
+        List<Object> listFinal = new ArrayList<>();
+        for (int i = 0; i < matrix.length; i++) {
+            
+            for (int j = 0; j < matrix[i].length; j++) {
+
+                System.out.print(matrix[i][j]);
+
+                if (matrix[i][j] == 1) {
+                    row[i] = row[i] + 1;
+                    column[j] = column[j] + 1;
+                }
+
+            }
+        }
+
+
+        if (checkFunctional(row)) {
+            listFinal.add("Funcional");
+        }
+        if (checkInjector(column)) {
+            listFinal.add("Injetora");
+        }
+        if (checkTotal(row)) {
+            listFinal.add("Total");
+        }
+        if (checkOverjet(column)) {
+            listFinal.add("Sobrejetora");
+        }
+        if (checkMonomorphism(row, column)) {
+            listFinal.add("Monomorfismo");
+        }
+        if (checkEpimorphism(row, column)) {
+            listFinal.add("Epimorfismo");
+        }
+        if (checkIsomorphism(row, column)) {
+            listFinal.add("Isomorfismo");
+        }
+        //listFinal.add(row);
+        //listFinal.add(column);
+        return listFinal;
+    }
+    private boolean checkFunctional(int row[]){
+        for (int i : row) {
+            if (i > 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean checkInjector(int column[]){
+        for (int i : column) {
+            if (i > 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean checkTotal(int row[]){
+        for (int i : row) {
+            if (i < 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean checkOverjet(int column[]){
+        for (int i : column) {
+            if (i < 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean checkMonomorphism(int row[], int column[]){
+        return (this.checkTotal(row) && this.checkInjector(column));
+    }
+    private boolean checkEpimorphism(int row[], int column[]){
+        return (this.checkFunctional(row) && this.checkOverjet(column));
+    }
+    private boolean checkIsomorphism(int row[], int column[]){
+        return (this.checkMonomorphism(row, column) && this.checkEpimorphism(row, column));
+    }
+    
+    private boolean checkPairPertinence(Set pairs, Set set1, Set set2){
+        Set domain = new Set();
+        Set image = new Set();
+        for (Pair pair : pairs.getPairs()) {
+            this.setDomain(domain, pair.getFirstElementPair());
+            this.setImage(image, pair.getSecondElementPair());
+        }
+        
+        for (Element element : domain.getElements()) {
+            if (!this.pertinence(set1, element)) {
+                return false;
+            }
+        }
+        for (Element element : image.getElements()) {
+            if (!this.pertinence(set2, element)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

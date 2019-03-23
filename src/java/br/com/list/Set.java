@@ -96,6 +96,17 @@ public class Set {
         set.setName(this.name);
         return set;
     }
+    
+     
+    public boolean checkPairPertinence(Element e1, Element e2){
+        for (Pair pair : pairs) {
+            if (pair.getFirstElementPair().getValue().equals(e1.getValue()) 
+                    && pair.getSecondElementPair().getValue().equals(e2.getValue()) ) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public String toString() {

@@ -105,8 +105,10 @@
             <table class="table table-bordered table-bordered table-sm">
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Conjunto</th>
+                        <th scope="col">Pares</th>
+                        <th scope="col">Dominio</th>
+                        <th scope="col">Imagem</th>
+                        <th scope="col">Classificacao</th>
                     </tr>
                 </thead>
                 <tbody id="bodyTableRelations">
