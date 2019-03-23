@@ -36,38 +36,42 @@ $(document).ready(function () {
 
         var content1 = "";
         var content2 = "";
-
-        $('#divPairs').fadeIn('slow');
-
-
-        if (globalSave.listSets.length > 1) {
-
-            var arr = new Array();
-            var string = "";
-            var arr2 = new Array();
-            var string2 = "";
-
-            for (var j = 0; j < globalSave.listSets[0].elements.length; j++) {
-                arr.push(globalSave.listSets[0].elements[j].value);
-            }
-            string = arr.join();
-            content1 += "<option value=" + globalSave.listSets[0].name + ">" + globalSave.listSets[0].name + " = { " + string + " }</option>";
-
-            for (var i = 0; i < globalSave.listSets[1].elements.length; i++) {
-                arr2.push(globalSave.listSets[1].elements[i].value);
-            }
-            string2 = arr2.join();
-            content2 += "<option value=" + globalSave.listSets[1].name + ">" + globalSave.listSets[1].name + " = { " + string2 + " }</option>";
-
-
-            $("#set1").html(content1);
-            $("#set2").html(content2);
-            $('#divSets').fadeIn('slow');
+        
+        if ($(this).prop('id') === 'arbitraryRelationship') {
+            $('#divPairs').fadeIn('slow');
+            $('#divSets').fadeOut('fast');
             $('#divSubmit').fadeIn("slow");
-
         } else {
-            alert("Impossivel realizar a relação selecionada! Operandos Incompletos.");
-            $('#divSubmit').fadeOut("fast");
+            $('#divPairs').fadeOut('fast');
+            if (globalSave.listSets.length > 1) {
+
+                var arr = new Array();
+                var string = "";
+                var arr2 = new Array();
+                var string2 = "";
+
+                for (var j = 0; j < globalSave.listSets[0].elements.length; j++) {
+                    arr.push(globalSave.listSets[0].elements[j].value);
+                }
+                string = arr.join();
+                content1 += "<option value=" + globalSave.listSets[0].name + ">" + globalSave.listSets[0].name + " = { " + string + " }</option>";
+
+                for (var i = 0; i < globalSave.listSets[1].elements.length; i++) {
+                    arr2.push(globalSave.listSets[1].elements[i].value);
+                }
+                string2 = arr2.join();
+                content2 += "<option value=" + globalSave.listSets[1].name + ">" + globalSave.listSets[1].name + " = { " + string2 + " }</option>";
+
+
+                $("#set1").html(content1);
+                $("#set2").html(content2);
+                $('#divSets').fadeIn('slow');
+                $('#divSubmit').fadeIn("slow");
+
+            } else {
+                alert("Impossivel realizar a relação selecionada! Operandos Incompletos.");
+                $('#divSubmit').fadeOut("fast");
+            }
         }
     });
 
@@ -81,6 +85,7 @@ $(document).ready(function () {
             data: $(this).serialize() + "&fileName=" + globalFileName,
             success: function (data) {
                 console.log(data);
+                console.log(JSON.parse(data));
             },
             error: function (data) {
                 console.log(data);
@@ -93,7 +98,7 @@ $(document).ready(function () {
     });
     
     function Mask(text) { //variavel do parametro recebe o caractere digitado//  
-        return text.replace(/[^0-9,;()]/gi,"");  
+        return text.replace(/[^0-9,;]/gi,"");  
     } 
 });
 

@@ -42,6 +42,10 @@ public class Element {
     public String getValue() {
         return value;
     }
+    
+    public int getParseValue() {
+        return Integer.parseInt(value);
+    }
 
     public void setValue(String value) {
         this.value = value;

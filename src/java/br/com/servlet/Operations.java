@@ -42,7 +42,9 @@ public class Operations extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         //Adiciona o path absoluto ao arquivo
-        String path = "C:/Users/vitor/Documents/NetBeansProjects/matematica-discreta-algebra-de-conjuntos/";
+        //String path = "C:/Users/vitor/Documents/NetBeansProjects/matematica-discreta-algebra-de-conjuntos/";
+        String path = this.getServletContext().getRealPath("");//"C:/Users/55329/Documents/NetBeansProjects/matematica-discreta-algebra-de-conjuntos/";
+        path = path.replace("build\\web\\", "");
         path+=request.getParameter("fileName");
         
         ReadTxtFile read = new ReadTxtFile(path);

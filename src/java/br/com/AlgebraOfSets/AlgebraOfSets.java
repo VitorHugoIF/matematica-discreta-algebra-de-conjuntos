@@ -9,6 +9,7 @@ import br.com.list.Set;
 import br.com.node.Element;
 import br.com.node.Pair;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -393,4 +394,112 @@ public class AlgebraOfSets {
 
         return result;
     }
+    
+    public List<Object> Relationships(List<Set> list, String relation){
+        List<Object> result = new ArrayList<>();
+        Set pairs = new Set();
+        Set domain = new Set();
+        Set image = new Set();
+        Set set1 = list.get(0);
+        Set set2 = list.get(1);
+        
+        for (int i = 0; i < set1.getElements().size(); i++) {
+            for (int j = 0; j < set2.getElements().size(); j++) {
+                this.setRelationship(pairs, domain, image, set1.getElements().get(i), set2.getElements().get(j), 
+                        relation.equals("=") ? "=" : relation.equals(">") ? ">" : relation.equals("<") ? "<" :
+                               relation.equals("^2") ? "^2" : "sqrt");
+            }
+        }
+        result.add(pairs);
+        result.add(domain);
+        result.add(image);
+        return result;
+    }
+    
+    private void setRelationship(Set pairs, Set domain, Set image, Element a, Element b, String relation){
+        Pair pair = new Pair();
+        switch (relation) {
+            case ">":
+                if (a.getParseValue() > b.getParseValue()) {
+                    pair.setFirstElementPair(a);
+                    pair.setSecondElementPair(b);
+                    this.setDomain(domain, a);
+                    this.setImage(image, b);
+                    pairs.setPairs(pair);
+                }   break;
+            case "<":
+                if (a.getParseValue() < b.getParseValue()) {
+                    pair.setFirstElementPair(a);
+                    pair.setSecondElementPair(b);
+                    this.setDomain(domain, a);
+                    this.setImage(image, b);
+                    pairs.setPairs(pair);
+                }   break;
+            case "=":
+                if (a.getParseValue() == b.getParseValue()) {
+                    pair.setFirstElementPair(a);
+                    pair.setSecondElementPair(b);
+                    this.setDomain(domain, a);
+                    this.setImage(image, b);
+                    pairs.setPairs(pair);
+                }   break;
+                case "^2":
+                if (a.getParseValue() == Math.pow(b.getParseValue(),2)) {
+                    pair.setFirstElementPair(a);
+                    pair.setSecondElementPair(b);
+                    this.setDomain(domain, a);
+                    this.setImage(image, b);
+                    pairs.setPairs(pair);
+                }break;
+            case "sqrt":
+                if (a.getParseValue() == Math.sqrt(b.getParseValue())) {
+                    pair.setFirstElementPair(a);
+                    pair.setSecondElementPair(b);
+                    this.setDomain(domain, a);
+                    this.setImage(image, b);
+                    pairs.setPairs(pair);
+                }break;
+                 
+            default:
+                break;
+        }
+    }
+    
+    private void setDomain(Set domain, Element element){
+        if (!this.pertinence(domain, element)) {
+            domain.setElements(element);
+        }
+    }
+    private void setImage(Set image, Element element){
+        if (!this.pertinence(image, element)) {
+            image.setElements(element);
+        }
+    }
+    
+    public Set generateArbitraryRelationPairs(String pairs) {
+        Set listPairs = new Set();
+
+        if (pairs.equals("")) {
+            return listPairs;
+        } else {
+            String ArrayOfPairs[] = pairs.split(";");
+
+            for (String ArrayOfPair : ArrayOfPairs) {
+                String[] ArrayOfElements = ArrayOfPair.split(",");
+                Pair pair = new Pair();
+                Element e1 = new Element("Arbitrary", "domain", ArrayOfElements[0]);
+                Element e2 = new Element("Arbitrary", "image", ArrayOfElements[1]);
+                pair.setFirstElementPair(e1);
+                pair.setSecondElementPair(e2);
+                listPairs.setPairs(pair);
+            }
+            return listPairs;
+        }
+
+    }
+    
+    public boolean getRelationshipClassification(Set pairsOfRealtionship){
+        return true;
+    }
+    
 }

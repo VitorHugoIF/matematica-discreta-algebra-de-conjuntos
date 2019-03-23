@@ -83,9 +83,9 @@
                     <label><h4>Pares</h4></label>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <input type="text" name="pairs" id="pairs" class="form-control" aria-describedby="pairsHelpBlock" placeholder="(1,2);(3,4)">
+                            <input type="text" name="pairs" id="pairs" class="form-control" aria-describedby="pairsHelpBlock" placeholder="1,2;3,4">
                             <small id="pairsHelpBlock" class="form-text text-muted">
-                                Represente os pares entre parenteses, separando os elementos por virgula(,) e cada par por ponto e virgula(;)
+                                Represente os pares separando os elementos por virgula(,) e cada par por ponto e virgula(;)
                             </small>
                         </div>
                     </div>
