@@ -33,17 +33,18 @@ $(document).ready(function () {
     });
 
     $(document).on("change", "input[name=radioRelations]", function (e) {
-        
+
         var content1 = "";
         var content2 = "";
-        
-        if ($(this).prop('id') === 'arbitraryRelationship') {
-            $('#divPairs').fadeIn('slow');
-            $('#divSubmit').fadeIn("slow");
-        } else {
-            $('#divPairs').fadeOut('fast');
-            if (globalSave.listSets.length > 1) {
 
+
+        if (globalSave.listSets.length > 1) {
+
+            if ($(this).prop('id') === 'arbitraryRelationship') {
+                $('#divPairs').fadeIn('slow');
+                $('#divSubmit').fadeIn("slow");
+            } else {
+                $('#divPairs').fadeOut('fast');
                 var arr = new Array();
                 var string = "";
                 var arr2 = new Array();
@@ -66,12 +67,13 @@ $(document).ready(function () {
                 $("#set2").html(content2);
                 $('#divSets').fadeIn('slow');
                 $('#divSubmit').fadeIn("slow");
-
-            } else {
-                alert("Impossivel realizar a relação selecionada! Operandos Incompletos.");
-                $('#divSubmit').fadeOut("fast");
             }
+
+        } else {
+            alert("Impossivel realizar a relação selecionada! Operandos Incompletos.");
+            $('#divSubmit').fadeOut("fast");
         }
+
     });
 
     $(document).on("submit", "#formRelations", function (e) {

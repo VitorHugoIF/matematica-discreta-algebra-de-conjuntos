@@ -35,18 +35,20 @@ $(document).ready(function () {
     });
     
     $(document).on("change", "input[name=radioCompositionRelations]", function (e) {
-        
+
         var content1 = "";
         var content2 = "";
         var content3 = "";
-        
-        if ($(this).prop('id') === 'arbitraryCompositionRelationship') {
-            $('#divPairs').fadeIn('slow');
-            $('#divSubmit').fadeIn("slow");
-        } else {
-            $('#divPairs').fadeOut('fast');
-            if (globalSave.listSets.length > 2) {
 
+
+
+        if (globalSave.listSets.length > 2) {
+            if ($(this).prop('id') === 'arbitraryCompositionRelationship') {
+
+                $('#divPairs').fadeIn('slow');
+                $('#divSubmit').fadeIn("slow");
+            } else {
+                $('#divPairs').fadeOut('fast');
                 var arr = new Array();
                 var string = "";
                 var arr2 = new Array();
@@ -65,7 +67,7 @@ $(document).ready(function () {
                 }
                 string2 = arr2.join();
                 content2 += "<option value=" + globalSave.listSets[1].name + ">" + globalSave.listSets[1].name + " = { " + string2 + " }</option>";
-                
+
                 for (var i = 0; i < globalSave.listSets[2].elements.length; i++) {
                     arr3.push(globalSave.listSets[2].elements[i].value);
                 }
@@ -78,12 +80,13 @@ $(document).ready(function () {
                 $("#set3").html(content3);
                 $('#divSets').fadeIn('slow');
                 $('#divSubmit').fadeIn("slow");
-
-            } else {
-                alert("Impossivel realizar a relação selecionada! Operandos Incompletos.");
-                $('#divSubmit').fadeOut("fast");
             }
+
+        } else {
+            alert("Impossivel realizar a relação selecionada! Operandos Incompletos.");
+            $('#divSubmit').fadeOut("fast");
         }
+
     });
     
     $(document).on("submit", "#formComposition", function (e) {
