@@ -29,15 +29,26 @@
                 </div>
                 <div class="d-flex justify-content-center col-md-6">
                     <ul class="navbar-nav">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="" id="menuOperations">Operações</a>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Operacoes
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#" id="menuOperations">Operacoes entre conjuntos</a>
+                                <a class="dropdown-item" href="#" id="menuExercises">Exercicios</a>
+                            </div>
                         </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="" id="menuExercises">Exercicios</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Relacoes
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#" id="menuRelations">Relacoes entre dois conjuntos</a>
+                                <a class="dropdown-item" href="#" id="menuComposition">Relacoes entre tres conjuntos(Composta)</a>
+                            </div>
                         </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="" id="menuRelations">Relações</a>
-                        </li>
+                        
                     </ul>
                 </div>
                 

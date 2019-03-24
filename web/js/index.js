@@ -53,5 +53,18 @@ $(document).ready(function () {
             }
         });
     });
+    
+    $(document).on("click", "#menuComposition", function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "composition.jsp",
+            success: function (data) {
+                $("#content").html(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
 
 });

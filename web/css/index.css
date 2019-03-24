@@ -8,12 +8,19 @@ and open the template in the editor.
     Author     : 55329
 */
 
-#navbarMenu, #navbarMenu a{
+#navbarMenu{
     background-color: #012549!important;
     color: #edcd6e;
 }
-#navbarMenu a:hover{
-    font-size: 18px;
+#navbarMenu a{
+    color: #edcd6e;
+}
+.dropdown-item:hover {
+    background-color: #012549!important;
+    color: #edcd6e!important;
+}
+.dropdown-item{
+    color: #012549!important;
 }
 #content{
     margin-top: 20px;

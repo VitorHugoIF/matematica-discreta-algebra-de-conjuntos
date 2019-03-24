@@ -9,7 +9,6 @@ import br.com.list.Set;
 import br.com.node.Element;
 import br.com.node.Pair;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -567,8 +566,6 @@ public class AlgebraOfSets {
             
             for (int j = 0; j < matrix[i].length; j++) {
 
-                System.out.print(matrix[i][j]);
-
                 if (matrix[i][j] == 1) {
                     row[i] = row[i] + 1;
                     column[j] = column[j] + 1;
@@ -664,5 +661,92 @@ public class AlgebraOfSets {
             }
         }
         return true;
+    }
+    
+    public List<Object> Compositions (List<Set> list, String relation, String StringPairsR, String StringPairsS){
+        List<Set> listR = new ArrayList<>();
+        List<Set> listS = new ArrayList<>();
+        List<Object> result = new ArrayList<>();
+        
+        listR.add(list.get(0));
+        listR.add(list.get(1));
+        listS.add(list.get(1));
+        listS.add(list.get(2));
+        
+        List<Object> compositionR;
+        List<Object> compositionS;
+        int matrix[][];
+        
+        if (relation.equals("arbitraryCompositionRelationship")) {
+            compositionR = this.Relationships(listR, "arbitraryRelationship", StringPairsR);
+            compositionS = this.Relationships(listS, "arbitraryRelationship", StringPairsS);
+            
+        }else{
+            compositionR = this.Relationships(listR, relation, StringPairsR);
+            compositionS = this.Relationships(listS, relation, StringPairsS);
+        }
+        
+        
+        Set pairsR = (Set) compositionR.get(0);
+        Set pairsS = (Set) compositionS.get(0);
+        int[][] matrixR =  (int[][]) compositionR.get(4);
+        int[][] matrixS =  (int[][]) compositionS.get(4);
+        
+        Set listPairs = new Set();listPairs.setName("PARES");
+        Set domain = new Set();domain.setName("DOMINIO");
+        Set image = new Set();image.setName("IMAGEM");
+        System.out.println( pairsR.getPairs());
+        System.out.println( "------------------------");
+        System.out.println( pairsS.getPairs());
+        
+        for (Pair pairR : pairsR.getPairs()) {
+           
+            for (Pair pairS : pairsS.getPairs()) {
+                System.out.println("----------");
+                System.out.println(pairR.getSecondElementPair()+" = "+pairS.getFirstElementPair());
+                if (pairR.getSecondElementPair().getParseValue() == pairS.getFirstElementPair().getParseValue()) {
+                    System.out.println("igual");
+                    Pair p = new Pair();
+                    p.setFirstElementPair(pairR.getFirstElementPair());
+                    p.setSecondElementPair(pairS.getSecondElementPair());
+                    listPairs.setPairs(p);
+                    
+                    this.setDomain(domain, pairR.getFirstElementPair());
+                    this.setImage(image, pairS.getSecondElementPair());
+                }
+            }
+        }
+        matrix = this.matrixProduct(matrixR, matrixS);
+        result.add(listPairs);
+        result.add(domain);
+        result.add(image);
+        result.add(this.getRelationshipClassification(matrix));
+        result.add(matrix);
+        
+        if (compositionR.size() > 5 || compositionS.size() > 5) {
+            result.add("PARES INCORRETOS");
+        }
+            
+        
+        return result;
+    }
+    
+    private int[][] matrixProduct(int[][] matrixR, int[][] matrixS) {
+        int[][] matrixComposition = new int[matrixR.length][matrixS[matrixS.length - 1].length];
+
+        for (int i = 0; i < matrixR.length; i++) {
+            for (int j = 0; j < matrixS[matrixS.length - 1].length; j++) {
+                int sum = 0;
+                for (int k = 0; k < matrixR.length; k++) {
+                    sum += (matrixR[i][k] * matrixS[k][j]);
+                }
+                if (sum > 0) {
+                    matrixComposition[i][j] = 1;
+                } else {
+                    matrixComposition[i][j] = 0;
+                }
+            }
+        }
+        return matrixComposition;
     }
 }

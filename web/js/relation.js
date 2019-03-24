@@ -39,7 +39,6 @@ $(document).ready(function () {
         
         if ($(this).prop('id') === 'arbitraryRelationship') {
             $('#divPairs').fadeIn('slow');
-            $('#divSets').fadeOut('fast');
             $('#divSubmit').fadeIn("slow");
         } else {
             $('#divPairs').fadeOut('fast');

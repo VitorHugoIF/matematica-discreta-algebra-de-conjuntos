@@ -12,6 +12,10 @@
         <servlet-name>Relations</servlet-name>
         <servlet-class>br.com.servlet.Relations</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Composition</servlet-name>
+        <servlet-class>br.com.servlet.Composition</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ReadFile</servlet-name>
         <url-pattern>/ReadFile</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>Relations</servlet-name>
         <url-pattern>/Relations</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Composition</servlet-name>
+        <url-pattern>/Composition</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
